@@ -1,0 +1,64 @@
+import { ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import ProductCard from './ProductCard';
+import type { Product } from '@/data/products';
+
+interface ProductSectionProps {
+  title: string;
+  products: Product[];
+  id?: string;
+  showViewAll?: boolean;
+  viewAllLink?: string;
+}
+
+const ProductSection = ({ 
+  title, 
+  products, 
+  id, 
+  showViewAll = true,
+  viewAllLink = '/category/te-gjitha'
+}: ProductSectionProps) => {
+  return (
+    <section className="py-12 md:py-16" id={id}>
+      <div className="container">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="section-title">
+            <span className="text-gold">{title.split(' ')[0]}</span> {title.split(' ').slice(1).join(' ')}
+          </h2>
+          {showViewAll && (
+            <Link to={viewAllLink}>
+              <Button variant="ghost" className="hidden md:flex items-center gap-2 uppercase tracking-wider text-sm text-gold hover:text-gold/80">
+                Shiko të gjitha
+                <ChevronRight size={18} />
+              </Button>
+            </Link>
+          )}
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+        {showViewAll && (
+          <div className="mt-8 text-center md:hidden">
+            <Link to={viewAllLink}>
+              <Button variant="outline" className="uppercase tracking-wider border-gold text-gold hover:bg-gold hover:text-primary">
+                Shiko të gjitha
+                <ChevronRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default ProductSection;
